@@ -39,9 +39,12 @@ async def on_message(msg:discord.Message):
         {msg.content}
         ''')
         res=cursor.fetchall()
-        res.split("\n")
+        mandar=""
         for r in res:
-            await msg.channel.send(r)
+            if len(mandar)+len(str(r))>2000:
+                await msg.channel.send(mandar)
+                mandar=""
+            mandar+=str(r)+"\n"
         cursor.close()
 
 Ramireth.run(os.environ["ranchear"])
