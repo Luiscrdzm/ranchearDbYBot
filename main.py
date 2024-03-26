@@ -20,7 +20,7 @@ async def on_ready():
     u=Ramireth.get_user(int(os.environ["owner_id"]))
     await u.send("Junciono!")
 
-@Ramireth.command(is_admin=True)
+@Ramireth.bridge_command(is_admin=True)
 async def set_terminal_channel(ctx,channel:discord.TextChannel):
     canales[str(ctx.guild.id)]=channel.id
     json.dump(canales,open("tcanales.json","w"))
@@ -28,15 +28,15 @@ async def set_terminal_channel(ctx,channel:discord.TextChannel):
 
 cursor=sql.cursor()
 @Ramireth.event
-async def on_message(ctx,msg:discord.Message):
-    if ctx.author.bot:
+async def on_message(msg:discord.Message):
+    if msg.author.bot:
         return
-    if str(ctx.guild.id) not in canales.keys():
+    if str(msg.guild.id) not in canales.keys():
         return
-    if ctx.channel.id==canales[str(ctx.guild.id)]:
-        await ctx.add_reaction("✅")
+    if msg.channel.id==canales[str(msg.guild.id)]:
+        await msg.add_reaction("✅")
         cursor.execute(str(msg.content))
         response=cursor.fetchall()
-        await ctx.send(response)
+        await msg.reply(response)
 
 Ramireth.run(os.environ["ranchear"])
