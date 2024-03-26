@@ -17,7 +17,7 @@ canales=json.load(open("tcanales.json"))
 
 @Ramireth.event
 async def on_ready():
-    u=Ramireth.get_user(int(os.environ["owner_id"]))
+    u=await Ramireth.fetch_user(int(os.environ["owner_id"]))
     await u.send("Junciono!")
 
 @Ramireth.bridge_command(is_admin=True)
@@ -35,7 +35,9 @@ async def on_message(msg:discord.Message):
     if msg.channel.id==canales[str(msg.guild.id)]:
         cursor=sql.cursor()
         await msg.add_reaction("✅")
-        cursor.execute(msg.content)
+        cursor.execute(f'''
+        {msg.content}
+        ''')
         await msg.reply(cursor.fetchall())
         cursor.close()
 
