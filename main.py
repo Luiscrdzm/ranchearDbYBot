@@ -11,7 +11,7 @@ sql=mysql.connector.connect(
     password="ranchear"
 )
 
-Ramireth=bridge.Bot(owner_id=int(os.environ["owner_id"]))
+Ramireth=bridge.Bot(owner_id=int(os.environ["owner_id"]),intents=discord.Intents.all())
 
 canales=json.load(open("tcanales.json"))
 
