@@ -38,7 +38,10 @@ async def on_message(msg:discord.Message):
         cursor.execute(f'''
         {msg.content}
         ''')
-        await msg.reply(cursor.fetchall())
+        res=cursor.fetchall()
+        res.split("\n")
+        for r in res:
+            await msg.channel.send(r)
         cursor.close()
 
 Ramireth.run(os.environ["ranchear"])
