@@ -10,7 +10,7 @@ sql=mysql.connector.connect(
     password="ranchear"
 )
 
-Ramireth=bridge.bot(owner_id=int(os.environ["owner_id"]))
+Ramireth=bridge.Bot(owner_id=int(os.environ["owner_id"]))
 
 @Ramireth.event
 async def on_ready():
