@@ -24,9 +24,8 @@ async def on_ready():
 async def set_terminal_channel(ctx,channel:discord.TextChannel):
     canales[str(ctx.guild.id)]=channel.id
     json.dump(canales,open("tcanales.json","w"))
-    await ctx.send(f"Ahora la terminal estara disponible en {channel.mention}")
+    await ctx.reply(f"Ahora la terminal estara disponible en {channel.mention}")
 
-cursor=sql.cursor()
 @Ramireth.event
 async def on_message(msg:discord.Message):
     if msg.author.bot:
@@ -34,9 +33,10 @@ async def on_message(msg:discord.Message):
     if str(msg.guild.id) not in canales.keys():
         return
     if msg.channel.id==canales[str(msg.guild.id)]:
+        cursor=sql.cursor()
         await msg.add_reaction("✅")
-        cursor.execute(str(msg.content))
-        response=cursor.fetchall()
-        await msg.reply(response)
+        cursor.execute(msg.content)
+        await msg.reply(cursor.fetchall())
+        cursor.close()
 
 Ramireth.run(os.environ["ranchear"])
