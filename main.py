@@ -26,25 +26,32 @@ async def set_terminal_channel(ctx,channel:discord.TextChannel):
     json.dump(canales,open("tcanales.json","w"))
     await ctx.reply(f"Ahora la terminal estara disponible en {channel.mention}")
 
+async def terminal_response(tup:list,ch:discord.TextChannel):
+    if tup==[]:
+        return
+    msg=""
+    for t in tup:
+        if len(msg)+len(str(t))>2000:
+            await ch.send(msg)
+            msg=""
+        msg+=str(t)+"\n"
+    if len(msg)>0:
+        await ch.send(msg)
+    return
+
 @Ramireth.event
 async def on_message(msg:discord.Message):
     if msg.author.bot:
         return
     if str(msg.guild.id) not in canales.keys():
         return
-    if msg.channel.id==canales[str(msg.guild.id)]:
+    if msg.channel.id==canales[str(msg.guild.id)] and msg.content!="":
         cursor=sql.cursor()
-        await msg.add_reaction("✅")
-        cursor.execute(f'''
-        {msg.content}
-        ''')
+        await msg.add_reaction("🆙")
+        cursor.execute(msg.content)
         res=cursor.fetchall()
-        mandar=""
-        for r in res:
-            if len(mandar)+len(str(r))>2000:
-                await msg.channel.send(mandar)
-                mandar=""
-            mandar+=str(r)+"\n"
+        await terminal_response(res,msg.channel)
+        await msg.remove_reaction("🆙",Ramireth.user)
         cursor.close()
 
 Ramireth.run(os.environ["ranchear"])
