@@ -4,6 +4,8 @@ import mysql.connector
 import os
 import json
 
+from tabulate import tabulate
+
 sql=mysql.connector.connect(
     host="localhost",
     database="stva",
@@ -19,6 +21,7 @@ canales=json.load(open("tcanales.json"))
 async def on_ready():
     u=await Ramireth.fetch_user(int(os.environ["owner_id"]))
     await u.send("Junciono!")
+    print("Junciono!")
 
 @Ramireth.bridge_command(is_admin=True)
 async def set_terminal_channel(ctx,channel:discord.TextChannel):
@@ -26,17 +29,18 @@ async def set_terminal_channel(ctx,channel:discord.TextChannel):
     json.dump(canales,open("tcanales.json","w"))
     await ctx.reply(f"Ahora la terminal estara disponible en {channel.mention}")
 
-async def terminal_response(tup:list,ch:discord.TextChannel):
-    if tup==[]:
+async def terminal_response(msg:str,ch:discord.TextChannel):
+    if msg=="":
+        await ch.send("Set vacio")
         return
-    msg=""
-    for t in tup:
-        if len(msg)+len(str(t))>2000:
-            await ch.send(msg)
-            msg=""
-        msg+=str(t)+"\n"
-    if len(msg)>0:
-        await ch.send(msg)
+    sender=""
+    for i in msg.split("\n"):
+        if len(sender)+len(i)>2000:
+            await ch.send(sender)
+            sender=""
+        sender+=i+"\n"
+    if len(sender)>0:
+        await ch.send(sender)
     return
 
 @Ramireth.event
@@ -49,7 +53,7 @@ async def on_message(msg:discord.Message):
         cursor=sql.cursor()
         await msg.add_reaction("🆙")
         cursor.execute(msg.content)
-        res=cursor.fetchall()
+        res=str(tabulate(cursor.fetchall(),headers=cursor.column_names,numalign="right",floatfmt=".2f",maxcolwidths=23))
         await terminal_response(res,msg.channel)
         await msg.remove_reaction("🆙",Ramireth.user)
         cursor.close()
