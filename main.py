@@ -51,7 +51,14 @@ async def on_message(msg:discord.Message):
     if msg.channel.id==canales[str(msg.guild.id)] and msg.content!="":
         cursor=sql.cursor()
         await msg.add_reaction("🆙")
-        cursor.execute(msg.content)
+        try:
+            cursor.execute(msg.content)
+        except mysql.connector.ProgrammingError as er:
+            await msg.remove_reaction("🆙",Ramireth.user)
+            await msg.add_reaction("❌")
+            await msg.reply(f"❌ {er} ❌")
+            cursor.close()
+            return
         res=str(tabulate(cursor.fetchall(),headers=cursor.column_names,numalign="right",floatfmt=".2f"))
         await terminal_response(res,msg.channel)
         await msg.remove_reaction("🆙",Ramireth.user)
