@@ -7,6 +7,8 @@ import os
 from tabulate import tabulate
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+if not os.path.exists("last_querys"):
+    os.mkdir("last_querys")
 
 sql=mysql.connector.connect(
     host="localhost",
