@@ -3,8 +3,10 @@ from discord.ext import commands,tasks,bridge
 import mysql.connector
 import os
 import json
-
+import os
 from tabulate import tabulate
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 sql=mysql.connector.connect(
     host="localhost",
@@ -33,14 +35,11 @@ async def terminal_response(msg:str,ch:discord.TextChannel):
     if msg=="":
         await ch.send("Set vacio")
         return
-    sender=""
-    for i in msg.split("\n"):
-        if len(sender)+len(i)>2000:
-            await ch.send(sender)
-            sender=""
-        sender+=i+"\n"
-    if len(sender)>0:
-        await ch.send(sender)
+    print(os.getcwd())
+    with open(f"last_querys/{ch.guild.id}.txt","w") as f:
+        f.write(msg)
+    f.close()
+    await ch.send(file=discord.File(f"last_querys/{ch.guild.id}.txt"))
     return
 
 @Ramireth.event
@@ -53,7 +52,7 @@ async def on_message(msg:discord.Message):
         cursor=sql.cursor()
         await msg.add_reaction("🆙")
         cursor.execute(msg.content)
-        res=str(tabulate(cursor.fetchall(),headers=cursor.column_names,numalign="right",floatfmt=".2f",maxcolwidths=23))
+        res=str(tabulate(cursor.fetchall(),headers=cursor.column_names,numalign="right",floatfmt=".2f"))
         await terminal_response(res,msg.channel)
         await msg.remove_reaction("🆙",Ramireth.user)
         cursor.close()
