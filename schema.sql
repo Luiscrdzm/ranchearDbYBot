@@ -6,7 +6,7 @@ CREATE TABLE vendedores(
 CREATE TABLE plantas(
     idP INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
-    precioVenta INT NOT NULL, -- Precio de venta por todas las unidades cosechadas
+    precioVenta INT NOT NULL, -- Precio de venta por cada una de las unidades cosechadas
     diasMaduracion INT NOT NULL, 
     experiencia INT NOT NULL,
     temporada SET('primavera', 'verano', 'otoño', 'invierno') NOT NULL,

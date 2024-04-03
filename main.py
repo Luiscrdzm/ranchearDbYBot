@@ -1,10 +1,22 @@
 import discord
 from discord.ext import commands,tasks,bridge
+# https://docs.pycord.dev/en/stable/index.html
+# pip install -U py-cord
+
 import mysql.connector
+# https://dev.mysql.com/doc/connector-python/en/connector-python-introduction.html
+# pip install mysql-connector-python
+
 import os
+# https://docs.python.org/es/3.10/library/os.html
+
 import json
-import os
+# https://docs.python.org/3/library/json.html
+
 from tabulate import tabulate
+# https://pyhdust.readthedocs.io/tabulate.html
+# pip install tabulate
+
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.exists("last_querys"):
@@ -27,7 +39,26 @@ async def on_ready():
     await u.send("Junciono!")
     print("Junciono!")
 
-@Ramireth.bridge_command(is_admin=True)
+helpEmbed=discord.Embed(
+    title="Comandos",
+    description="Comandos disponibles para el bot de terminal de discord",
+    color=0x1de08f,
+    fields=[
+        discord.EmbedField(
+            name="help",
+            value="Muestra este mensaje"
+        ),
+        discord.EmbedField(
+            name="set_terminal_channel",
+            value="Establece el canal de terminal. Solo los administradores pueden usar este comando"
+        )
+    ]
+)
+@Ramireth.slash_command(description="Despliega mensaje de ayuda")
+async def help(ctx):
+    await ctx.reply(embed=helpEmbed)
+
+@Ramireth.slash_command(is_admin=True,description="Establece el canal de terminal")
 async def set_terminal_channel(ctx,channel:discord.TextChannel):
     canales[str(ctx.guild.id)]=channel.id
     json.dump(canales,open("tcanales.json","w"))
