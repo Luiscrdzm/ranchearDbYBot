@@ -1,0 +1,3 @@
+  idP  nombre      precioVenta    diasMaduracion    experiencia  temporada        recosecha  diasRecosecha      produccion  chanceExtra
+-----  --------  -------------  ----------------  -------------  -------------  -----------  ---------------  ------------  -------------
+    1  Ajo                  60                 4             12  {'primavera'}            0                              1

@@ -105,7 +105,8 @@ INSERT INTO compraSemillas(idP,idV,precioCompra) VALUES
 
 INSERT INTO notas(nombre,descripcion) VALUES
     ('Año 2','Las semillas necesarias solo estaran disponibles a partir del segundo año.'),
-    ('No se recomienda vender','Se recomienda que proceses este cultivo en otro producto');
+    ('No se recomienda vender','Se recomienda que proceses este cultivo en otro producto'),
+    ('Semillas en cosecha','Esta planta tiene la cualidad de soltar semillas extra al cosecharse');
 
 INSERT INTO plantasNotas(idN,idP) VALUES
     (1,1),
@@ -113,5 +114,6 @@ INSERT INTO plantasNotas(idN,idP) VALUES
     (1,26),
     (2,3),
     (2,17),
+    (3,17),
     (2,20),
     (2,25);

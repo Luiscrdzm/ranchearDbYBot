@@ -1,0 +1,3 @@
+  idP  nombre      precioVenta    diasMaduracion    experiencia  temporada              recosecha  diasRecosecha      produccion  chanceExtra
+-----  --------  -------------  ----------------  -------------  -------------------  -----------  ---------------  ------------  -------------
+   17  Girasol              80                 8             14  {'otoño', 'verano'}            0                              1

@@ -92,6 +92,12 @@ async def on_message(msg:discord.Message):
             await msg.reply(f"❌ {er} ❌")
             cursor.close()
             return
+        except:
+            await msg.remove_reaction("🆙",Ramireth.user)
+            await msg.add_reaction("❌")
+            await msg.reply("❌ Error desconocido ❌")
+            cursor.close()
+            return
         res=str(tabulate(cursor.fetchall(),headers=cursor.column_names,numalign="right",floatfmt=".2f"))
         await terminal_response(res,msg.channel)
         await msg.remove_reaction("🆙",Ramireth.user)
