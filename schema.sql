@@ -40,3 +40,17 @@ CREATE TABLE compraSemillas(
 ALTER TABLE compraSemillas
     ADD CONSTRAINT fk_cs_vendedor FOREIGN KEY (idV) REFERENCES vendedores(idV),
     ADD CONSTRAINT fk_cs_planta FOREIGN KEY (idP) REFERENCES plantas(idP);
+
+CREATE TABLE pescados(
+    idP INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    precioVenta INT NOT NULL,
+    experiencia INT NOT NULL,
+    temporada SET('primavera', 'verano', 'otoño', 'invierno') NOT NULL,
+    horaInicio INT NOT NULL,
+    horaFin INT NOT NULL,
+    localizacion SET('oceano','rio pueblo','rio bosque','lago bosque','montaña','estanque secreto','minas','minas frio','minas lava','cascada','desierto','isla jengibre','pantano de la bruja','mercado nocturno','madriguera','cloacas') NOT NULL,
+    clima SET('sol','lluvia','viento') NOT NULL,
+    dificultad INT NOT NULL,
+    comportamiento ENUM('flotador','dardo','fluido','variado','plomo') NOT NULL
+);
